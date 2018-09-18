@@ -5,6 +5,7 @@ import Pen from './rn-draw/tools/pen';
 import uuidv1 from 'uuid/v1';
 import Point from './rn-draw/tools/point';
 import {Svg}  from './rn-draw/config';
+import DrawingListView from './DrawingListView'
 
 const {
   G,
@@ -74,7 +75,7 @@ export default class App extends React.Component {
     ):(
         <View style={styles.container}>
           <View style={styles.container}>
-            <Text>React Native Draw</Text>
+            <Text>🐱🐱🐱</Text>
             <View style={styles.btnContainer}>
               <TouchableOpacity
                 onPress={this.clear}
@@ -136,8 +137,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   },
   imageFrame:{
-    height: 350,
-    width:350,
+    flex:1,
     padding: 15,
     flexDirection: 'row',
     justifyContent: 'center'
