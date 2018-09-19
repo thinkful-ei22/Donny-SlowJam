@@ -8,7 +8,9 @@ class DashboardView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-             text: 'Useless Placeholder' 
+             text: 'Useless Placeholder', 
+             searchMedia:[]
+             
             };
       }
 
@@ -47,10 +49,36 @@ class DashboardView extends React.Component {
       );
     }
     _submit = () => {
-        alert(`Searching Youtube for ${this.state.text}!`);
+     
+     alert(`Searching Youtube for ${this.state.text}!`);
+     this._fetchYoutubeList(this.state.text);
       };
 
+
+    _fetchYoutubeList(searchString){
+        console.log("FETCH ACTINO",searchString);
+        return fetch(`http://localhost:8090/search/${this.state.text}`)
+            .then(res =>res.json())
+            .then((responseJson) =>{
+                this.setState({ 
+                    searchMedia : responseJson.items
+                });
+            }) 
+            .then(()=>console.log(this.state.searchMedia))
+            .catch(err => console.log(err));
+
+    }
+
+    _loadYoutubeResults(results){
+        console.log(results);
+
+
+    }
+
   }
+
+
+
 
 
   const styles = StyleSheet.create({
