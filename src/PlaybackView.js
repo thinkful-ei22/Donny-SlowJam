@@ -35,12 +35,12 @@ class PlaylistItem {
 const PLAYLIST = [
   new PlaylistItem(
     '"Bobby Schmurda - Hot N*gga',
-    'https://r3---sn-8xgp1vo-p5ql.googlevideo.com/videoplayback?sparams=clen%2Cdur%2Cei%2Cgcr%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Ckeepalive%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Crequiressl%2Csource%2Cexpire&gir=yes&expire=1537353927&id=o-ANxGTo6pfV5JvhiUMXAcWPtI79f8XHW_2XZVHcxnMrAg&keepalive=yes&c=WEB&ipbits=0&initcwndbps=1307500&gcr=us&clen=3151204&fvip=3&dur=198.368&lmt=1532770165679988&key=yt6&itag=140&ip=108.31.232.160&source=youtube&requiressl=yes&mime=audio%2Fmp4&mm=31%2C29&mn=sn-8xgp1vo-p5ql%2Csn-p5qs7nek&ei=Z9ShW4TXC5GmhgbNh5LIDA&ms=au%2Crdu&mt=1537332231&mv=m&pl=21&ratebypass=yes&signature=3395FC280B2CF1CB4C47952642AAE76E6943B036.D7D55D14E610E7C9B64024CA2F6E8F6B5208F82D',
+    'https://ia800501.us.archive.org/11/items/popeye_i_dont_scare/popeye_i_dont_scare_512kb.mp4',
     false
   ),
   new PlaylistItem(
     'White Iverson',
-    'https://r8---sn-8xgp1vo-p5ql.googlevideo.com/videoplayback?dur=263.128&ms=au%2Crdu&mt=1537332231&mv=m&itag=140&mm=31%2C29&mn=sn-8xgp1vo-p5ql%2Csn-p5qlsndd&gir=yes&id=o-AJMuqK_zQOQlqBfjjKNw7gVNXpTIC5TcDFf0oPZfMhYh&expire=1537353962&ip=108.31.232.160&lmt=1537144203911030&ei=itShW_OxAoPe8wS6vY2gCg&pl=21&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Ckeepalive%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Crequiressl%2Csource%2Cexpire&source=youtube&initcwndbps=1307500&keepalive=yes&c=WEB&mime=audio%2Fmp4&clen=4179816&ipbits=0&fvip=1&requiressl=yes&key=yt6&ratebypass=yes&signature=BAAE7F10B7704B602FF9295A7CA87F721B795BA1.26F6CB3430E0F8F2102098B4376F53976CC2C6B6',
+'https://r5---sn-8xgp1vo-p5qs.googlevideo.com/videoplayback?c=WEB&expire=1537376860&sparams=clen%2Cdur%2Cei%2Cgir%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Ckeepalive%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Crequiressl%2Csource%2Cxtags%2Cexpire&mime=audio%2Fmp4&pl=21&itag=140&dur=283.585&mv=m&source=youtube&keepalive=yes&clen=4504713&ipbits=0&initcwndbps=1256250&mn=sn-8xgp1vo-p5qs%2Csn-p5qlsndd&mm=31%2C29&id=o-AFYUog3MSIJeXLvbgXtawn5Rv_SKmHc_K5charowZmLY&key=yt6&ip=108.31.232.160&gir=yes&mt=1537355160&ms=au%2Crdu&requiressl=yes&xtags=tx%3D9474457&lmt=1501183963361757&fvip=3&ei=_C2iW6rlFsPE8wTM2Z7ICg&ratebypass=yes&signature=14C07B1812C0CA9530EB8517C4AD7BA03EC044D7.5823A6BFB862C8388ED69EACF7359D2BA5643E6D&ir=1&rr=12&fexp=23755740,23763599',
    false
   ),
   new PlaylistItem(
@@ -113,13 +113,15 @@ export default class PlaybackView extends React.Component {
       fontLoaded: false,
       shouldCorrectPitch: false,
       volume: 1.0,
-      rate: 1.0,
+      rate: 0.767,
       videoWidth: DEVICE_WIDTH,
       videoHeight: VIDEO_CONTAINER_HEIGHT,
       poster: false,
       useNativeControls: false,
       fullscreen: false,
       throughEarpiece: false,
+      mediaFile:null,
+      youtubeId:this.props.navigation.state.params.youtubeId
     };
   }
 
@@ -137,15 +139,23 @@ export default class PlaybackView extends React.Component {
       playThroughEarpieceAndroid: false,
     });
     (async () => {
+      await this._getMediaSource(this.props.navigation.state.params.youtubeId),
       await Font.loadAsync({
         ...MaterialIcons.font,
         'cutive-mono-regular': require('../assets/fonts/CutiveMono-Regular.ttf'),
       });
+
+  
+       console.log('Player mounting');
+      // PLAYLIST.push(new PlaylistItem('test',this._getMediaSource(this.props.youtubeId),false));
       this.setState({ fontLoaded: true });
     })();
   }
 
   async _loadNewPlaybackInstance(playing) {
+    console.log('Load New Playback Instance');
+    console.log('this playback props',this.props.navigation.state.params.youtubeId);
+    console.log('this state props youtubeId', this.state.youtubeId);
     if (this.playbackInstance != null) {
       await this.playbackInstance.unloadAsync();
       this.playbackInstance.setOnPlaybackStatusUpdate(null);
@@ -153,6 +163,7 @@ export default class PlaybackView extends React.Component {
     }
 
     const source = { uri: PLAYLIST[this.index].uri };
+    // const source = { uri: PLAYLIST[this.index].uri };
     const initialStatus = {
       shouldPlay: playing,
       rate: this.state.rate,
@@ -433,6 +444,21 @@ export default class PlaybackView extends React.Component {
         })
     );
   };
+
+  _getMediaSource =(youtubeId)=>{
+    console.log("FETCH YOUTUBE ID",youtubeId);
+    return fetch(`http://localhost:8090/${youtubeId}`)
+        .then(res =>res.json())
+        .then((responseJson) =>{
+        PLAYLIST.push(new PlaylistItem('TEST',responseJson.fileURL,false));
+          //responseJson.fileUrl
+            // this.setState({ 
+            //     mediaFile : responseJson.fileUrl
+            // });
+        }) 
+        // .then(()=>console.log('lol playlist', PLAYLIST))
+        .catch(err => console.log(err));
+  }
 
   render() {
     const { navigate } = this.props.navigation;
