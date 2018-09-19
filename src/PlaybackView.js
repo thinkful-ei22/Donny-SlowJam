@@ -31,7 +31,7 @@ class PlaylistItem {
     this.isVideo = isVideo;
   }
 }
-
+let _source=null;
 const PLAYLIST = [
   new PlaylistItem(
     '"Bobby Schmurda - Hot N*gga',
@@ -113,7 +113,7 @@ export default class PlaybackView extends React.Component {
       fontLoaded: false,
       shouldCorrectPitch: false,
       volume: 1.0,
-      rate: 0.767,
+      rate: 0.747,
       videoWidth: DEVICE_WIDTH,
       videoHeight: VIDEO_CONTAINER_HEIGHT,
       poster: false,
@@ -152,9 +152,11 @@ export default class PlaybackView extends React.Component {
     })();
   }
 
+ 
+
   async _loadNewPlaybackInstance(playing) {
     console.log('Load New Playback Instance');
-    console.log('this playback props',this.props.navigation.state.params.youtubeId);
+    console.log('this playback props',this.props.navigation.state);
     console.log('this state props youtubeId', this.state.youtubeId);
     if (this.playbackInstance != null) {
       await this.playbackInstance.unloadAsync();
@@ -162,7 +164,7 @@ export default class PlaybackView extends React.Component {
       this.playbackInstance = null;
     }
 
-    const source = { uri: PLAYLIST[this.index].uri };
+    const source = {name: this.props.navigation.state.params.youtubeName, uri:_source};
     // const source = { uri: PLAYLIST[this.index].uri };
     const initialStatus = {
       shouldPlay: playing,
@@ -184,7 +186,8 @@ export default class PlaybackView extends React.Component {
       const { sound, status } = await Audio.Sound.create(
         source,
         initialStatus,
-        this._onPlaybackStatusUpdate
+        this._onPlaybackStatusUpdate,
+        false
       );
       this.playbackInstance = sound;
     }
@@ -208,8 +211,9 @@ export default class PlaybackView extends React.Component {
         isLoading: true,
       });
     } else {
+      this._onPlayPausePressed();
       this.setState({
-        playbackInstanceName: PLAYLIST[this.index].name,
+        playbackInstanceName: this.props.navigation.state.params.youtubeTitle,
         showVideo: PLAYLIST[this.index].isVideo,
         isLoading: false,
       });
@@ -450,6 +454,7 @@ export default class PlaybackView extends React.Component {
     return fetch(`http://localhost:8090/${youtubeId}`)
         .then(res =>res.json())
         .then((responseJson) =>{
+          _source = responseJson.fileURL;
         PLAYLIST.push(new PlaylistItem('TEST',responseJson.fileURL,false));
           //responseJson.fileUrl
             // this.setState({ 
@@ -527,13 +532,13 @@ export default class PlaybackView extends React.Component {
               opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
             },
           ]}>
-          <TouchableHighlight
+          {/* <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
             onPress={this._onBackPressed}
             disabled={this.state.isLoading}>
             <Image style={styles.button} source={ICON_BACK_BUTTON.module} />
-          </TouchableHighlight>
+          </TouchableHighlight> */}
           <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
@@ -544,20 +549,20 @@ export default class PlaybackView extends React.Component {
               source={this.state.isPlaying ? ICON_PAUSE_BUTTON.module : ICON_PLAY_BUTTON.module}
             />
           </TouchableHighlight>
-          <TouchableHighlight
+          {/* <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
             onPress={this._onStopPressed}
             disabled={this.state.isLoading}>
             <Image style={styles.button} source={ICON_STOP_BUTTON.module} />
-          </TouchableHighlight>
-          <TouchableHighlight
+          </TouchableHighlight> */}
+          {/* <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
             onPress={this._onForwardPressed}
             disabled={this.state.isLoading}>
             <Image style={styles.button} source={ICON_FORWARD_BUTTON.module} />
-          </TouchableHighlight>
+          </TouchableHighlight> */}
         </View>
         <View style={[styles.buttonsContainerBase, styles.buttonsContainerMiddleRow]}>
           <View style={styles.volumeContainer}>
@@ -687,7 +692,9 @@ const styles = StyleSheet.create({
   },
   wrapper: {},
   nameContainer: {
-    height: FONT_SIZE,
+    height: 50,
+    paddingRight: 20,
+    paddingLeft:20
   },
   space: {
     height: FONT_SIZE,
