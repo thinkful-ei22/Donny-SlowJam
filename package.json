@@ -7,7 +7,7 @@
     "react-native-scripts": "1.14.0",
     "react-test-renderer": "16.3.1"
   },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "react-native-scripts start",
     "eject": "react-native-scripts eject",
@@ -22,6 +22,9 @@
     "expo": "^27.0.1",
     "react": "16.3.1",
     "react-native": "~0.55.2",
+    "react-native-elements": "^0.19.1",
+    "react-navigation": "^2.14.2",
+    "react-navigation-fluid-transitions": "^0.2.6",
     "rn-draw": "^0.0.6",
     "uuidv1": "^1.6.14"
   }
