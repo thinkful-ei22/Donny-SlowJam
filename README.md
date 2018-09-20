@@ -10,7 +10,7 @@ The basic idea of this app is a Youtube music playing application, with a twist 
 
 ## Technical Challenges
 
-This app was created as part of Flex Week in the Thinkful Engineering Immersion Program. The goal of this particular week is to practice learning a new technology/framework/etc in a week by yourself. In this case, I chose React Native (with no previous experience or knowledge of it) because I thought it would be fun!
+This app was created as part of Flex Week in the Thinkful Engineering Immersion Program. The goal of Flex Week is to practice learning a new technology/framework/etc in a week by yourself. In this case, I chose React Native (with no previous experience or knowledge of it) because I thought it would be fun!
 
 After reading the React Native docs and perusing links and tinkering with example code, I decided on the idea and discovered some immediate hurdles:
 
@@ -29,15 +29,19 @@ However neither of these solutions offer the ability to process the audio stream
 
 In order to achieve this, I came up with an addition solution:
 
-* Run a Node server that takes a Youtube stream and processes it using FFmpeg, then streams that back to the client.
+* Run a Node server that takes a Youtube stream and processes it using FFmpeg, then stream the processed stream back to the client.
 
-This works fine, but Expo's Audio API already allows you to process audio in the way I want - e.g. slow it down, so all I really need to do is send the audio data in a format that it can play (mp4/mp3). You can extract the streams from a Youtube video following the method used by Youtube downloader sites, an excellent explanation which can be found here : [https://tyrrrz.me/Blog/Reverse-engineering-YouTube] 
+This works fine, but Expo's Audio API already allows you to process audio in the way I want - e.g. slow it down, so all I really need to do is send the audio data in a format that it can play (mp4/mp3). You can extract the streams from a Youtube video following the method used by Youtube downloader sites which works by querying an AJAX endpoint used internally by YouTube's iframe embed API, an excellent explanation which can be found here : [https://tyrrrz.me/Blog/Reverse-engineering-YouTube] 
 
 A JavaScript implementation of the above can be found at [https://github.com/fent/node-ytdl-core].
 
+Although you could probably do this all client-side (query the Youtube iframe API, process the results), I set up a server with ytdl-core and an endpoint that takes in a youtube video ID and then returns a JSON object with the link to the desired audio stream. 
 
+Once that was setup, things mostly worked! 
 
+## Further Thoughts
 
+Currently, the app has minimal functionality other than being able to take a search term, render a simple list of Youtube results which you can click to then play the (slowed-down) audio. It's lacking useful features for this type of app, such as making a playlist so you can play tracks one after another, which would be super-useful obviously. And also backgrounding of audio when the application is not in focus - this is a current limitation of expo, though you can of course detach the project and then implement that. Additionally, thinking about it some more, pretty much all of the project could be implemented outside of React Native as just a plain ol' React + HTML/CSS web application (which if you really wanted, I suppose you could wrap in some kind of wrapper to make a mobile app) since I'm not really using any underlying features of the phone currently like the camera or GPS, local storage. I'll probably keep working on this project though after Flex Week, fixing things and improving it - like I'm definitly going to add playlist functionality. One more thing - separating a Youtube video's media streams is against Youtubes ToS, so making an app that utilizes that is not the best idea if you are planning on making a commercial app, but this is more of a speculative fun idea :)
 
 
 
