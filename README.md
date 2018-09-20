@@ -6,11 +6,11 @@
 # Slowjam - Slow your roll 🐌🐢
 
 Created using React Native and Expo SDK. 
-Slowjam is a Youtube music application, with a twist - the audio is processed so that it's sl o w w w e d down (with the pitch being affected as well). This has the effect of elevating the pathos of certain songs - for example, try listening to **The Smith's "Heaven knows I'm miserable now"** at 70% speed - *it becomes epically tragicomic*. As for the current contemporary cultural interest in slowed-down music, I'd say it originates in the pioneering efforts of Robert Earl Davis Jr. (July 20, 1971 – November 16, 2000), better known under his *nomme-de-guerre* DJ Screw, whose "chopped-and-screwed" mixes are a deep and compelling exploration of slowness as form.
+Slowjam is a Youtube music application, with a twist - the audio is processed so that it's sl o w w w e d down, with the pitch being affected as well. This has the effect of elevating the pathos of certain songs - for example, try listening to **The Smith's "Heaven knows I'm miserable now"** at 70% speed: *it becomes epically tragicomic*. As for the current contemporary cultural interest in slowed-down music, my own gut says it originates in the pioneering efforts of Robert Earl Davis Jr. (July 20, 1971 – November 16, 2000), better known under his *nomme-de-guerre* DJ Screw, whose "chopped-and-screwed" mixes are a deep and compelling exploration of slowness as form.
 
 ## Technical Challenges
 
-This app was created as part of Flex Week in the Thinkful Engineering Immersion Program. The goal of Flex Week is to practice learning a new technology/framework/etc in a week by yourself. I chose React Native (with no previous experience or knowledge of it) because I thought it would be fun (which, to be fair, it was).
+This app was created as part of Flex Week in the Thinkful Engineering Immersion Program. The goal of Flex Week is to practice learning a new technology/framework/etc in a week by yourself. I chose React Native (with no previous experience or knowledge of it) because I thought it would be useful to know and fun to learn.
 
 After reading the React Native docs and perusing links and tinkering with example code, I decided on an idea only to run into an immediate issue:
 
@@ -25,7 +25,7 @@ Possible, popular solutions include:
 
 Both of these solutions have their own advantages and disadvantages,with loading Youtube videos from a WebView being the simplest and fastest workaround since I could remain within a completely Expo-contained workflow.
 
-However neither of these solutions offer a straightforward method of to processing the audio stream itself.
+Neither of these solutions offer a straightforward method of to processing the audio stream itself.
 
 In order to achieve this, I came up with an addition solution:
 
