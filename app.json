@@ -1,7 +1,8 @@
 {
   "expo": {
     "name":"slowjam",
-    "description":"Simple music playing app that pulls audio from a Youtube audio stream allowing sound processing to be applied - note, audio not available in the appetize.io emulation preview, but works if you use the expo app on a physical phone.",
+    "description":
+    "Simple music playing app that pulls audio from a Youtube audio stream allowing sound processing to be applied - note, audio is not available in the appetize.io emulation preview, but works if you open the project inside the expo app (@keithnull/slowjam) on a physical phone ",
     "sdkVersion": "27.0.0",
     "version":"0.0.1"
   },
