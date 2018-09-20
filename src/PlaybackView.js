@@ -84,7 +84,7 @@ const LOOPING_TYPE_ONE = 1;
 const LOOPING_TYPE_ICONS = { 0: ICON_LOOP_ALL_BUTTON, 1: ICON_LOOP_ONE_BUTTON };
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
-const BACKGROUND_COLOR = '#FFF8ED';
+const BACKGROUND_COLOR = '#FFFFFF';
 const DISABLED_OPACITY = 0.5;
 const FONT_SIZE = 14;
 const LOADING_STRING = '... loading ...';
@@ -98,6 +98,7 @@ export default class PlaybackView extends React.Component {
     this.index = 0;
     this.isSeeking = false;
     this.shouldPlayAtEndOfSeek = false;
+    this.unmounted = null,
     this.playbackInstance = null;
     this.state = {
       showVideo: false,
@@ -121,12 +122,13 @@ export default class PlaybackView extends React.Component {
       fullscreen: false,
       throughEarpiece: false,
       mediaFile:null,
+      
       youtubeId:this.props.navigation.state.params.youtubeId
     };
   }
 
   static navigationOptions = {
-    title: 'Playback Screen',
+    title: '♪ ♪♪  ♪  ♪',
   };
 
   componentDidMount() {
@@ -152,18 +154,35 @@ export default class PlaybackView extends React.Component {
     })();
   }
 
+
+ componentWillUnmount(){
+    // if (this.playbackInstance != null) {
+    //   await this.playbackInstance.unloadAsync();
+    //   this.playbackInstance = null;
+
+    //   // this.playbackInstance.setOnPlaybackStatusUpdate(null);
+    //   // this.playbackInstance.stopAsync();
+    // }
+
+      this.unmounted = true;
+      this.playbackInstance.unloadAsync();
+   
+
+
+    
+  }
  
 
   async _loadNewPlaybackInstance(playing) {
     console.log('Load New Playback Instance');
     console.log('this playback props',this.props.navigation.state);
     console.log('this state props youtubeId', this.state.youtubeId);
-    if (this.playbackInstance != null) {
+    if (this.playbackInstance != null && this.unmounted) {
       await this.playbackInstance.unloadAsync();
       this.playbackInstance.setOnPlaybackStatusUpdate(null);
       this.playbackInstance = null;
     }
-
+    if(!this.unmounted){
     const source = {name: this.props.navigation.state.params.youtubeName, uri:_source};
     // const source = { uri: PLAYLIST[this.index].uri };
     const initialStatus = {
@@ -194,6 +213,7 @@ export default class PlaybackView extends React.Component {
 
     this._updateScreenForLoading(false);
   }
+  }
 
   _mountVideo = component => {
     this._video = component;
@@ -220,27 +240,32 @@ export default class PlaybackView extends React.Component {
     }
   }
 
-  _onPlaybackStatusUpdate = status => {
-    if (status.isLoaded) {
-      this.setState({
-        playbackInstancePosition: status.positionMillis,
-        playbackInstanceDuration: status.durationMillis/2,
-        shouldPlay: status.shouldPlay,
-        isPlaying: status.isPlaying,
-        isBuffering: status.isBuffering,
-        rate: status.rate,
-        muted: status.isMuted,
-        volume: status.volume,
-        loopingType: status.isLooping ? LOOPING_TYPE_ONE : LOOPING_TYPE_ALL,
-        shouldCorrectPitch: status.shouldCorrectPitch,
-      });
-      if (status.didJustFinish && !status.isLooping) {
-        this._advanceIndex(true);
-        this._updatePlaybackInstanceForIndex(true);
+  _onPlaybackStatusUpdate = status => { 
+    if (!status.isLoaded) {
+      // Update your UI for the unloaded state
+      if (status.error) {
+        console.log(`Encountered a fatal error during playback: ${status.error}`);
+        // Send Expo team the error on Slack or the forums so we can help you debug!
       }
     } else {
-      if (status.error) {
-        console.log(`FATAL PLAYER ERROR: ${status.error}`);
+      if (status.isLoaded) {
+      // console.log("status.isLoaded")
+
+        if (this.unmounted) {
+            console.log("IF THIS.UNMOUNTED IS TRUE")
+        } else {
+          // console.log("in this.unmounted conditional")
+          this.setState({
+            playbackInstancePosition: status.positionMillis,
+            playbackInstanceDuration: status.durationMillis/2,
+            shouldPlay: status.shouldPlay,
+            isPlaying: status.isPlaying,
+          });
+        }
+      } else {
+        if (status.error) {
+          console.log(`FATAL PLAYER ERROR: ${status.error}`);
+        }
       }
     }
   };
@@ -383,10 +408,18 @@ export default class PlaybackView extends React.Component {
       this.state.playbackInstancePosition != null &&
       this.state.playbackInstanceDuration != null
     ) {
-      return this.state.playbackInstancePosition / this.state.playbackInstanceDuration;
+      if (this.state.playbackInstancePosition / this.state.playbackInstanceDuration == 1) {
+        this.playbackInstance.unloadAsync()
+      }
+      else {
+        return (
+          this.state.playbackInstancePosition /
+          this.state.playbackInstanceDuration
+        );
+      }
     }
     return 0;
-  }
+  };
 
   _getMMSSFromMillis(millis) {
     const totalSeconds = millis / 1000;
@@ -490,7 +523,7 @@ export default class PlaybackView extends React.Component {
               },
             ]}
             resizeMode={Video.RESIZE_MODE_CONTAIN}
-            onPlaybackStatusUpdate={this._onPlaybackStatusUpdate}
+            // onPlaybackStatusUpdate={this._onPlaybackStatusUpdate}
             onLoadStart={this._onLoadStart}
             onLoad={this._onLoad}
             onError={this._onError}

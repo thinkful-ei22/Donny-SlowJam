@@ -17,9 +17,25 @@ import PlaybackView from './PlaybackView';
 import MediaList from './MediaList';
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
-const BACKGROUND_COLOR = '#FFF8ED';
+const BACKGROUND_COLOR = '#FFFFFF';
 const DISABLED_OPACITY = 0.5;
 const FONT_SIZE = 14;
+
+class Icon {
+    constructor(module, width, height) {
+      this.module = module;
+      this.width = width;
+      this.height = height;
+      Asset.fromModule(this.module).downloadAsync();
+    }
+  }
+
+
+const ICON_LOGO= new Icon(require('../assets/logo.png'), 100, 132);
+
+
+
+
 
 class DashboardView extends React.Component {
 
@@ -28,13 +44,14 @@ class DashboardView extends React.Component {
         this.state = {
              text: 'Useless Placeholder', 
              searchMedia:[],
-             fontLoaded:false
+             fontLoaded:false,
+             searching:false
              
             };
       }
 
     static navigationOptions = {
-      title: 'Hello World',
+      title: '',
     };
 
     async componentDidMount() {
@@ -76,6 +93,15 @@ class DashboardView extends React.Component {
            />
            {/* <Text>HELLO</Text> */}
                {/* <MediaList searchMedia={this.state.searchMedia}/> */}
+            
+            <View style={this.state.searching ? null : styles.imageContainer}>   
+             <Image
+              style={styles.logo}
+              source={this.state.searching ? null  : ICON_LOGO.module} /> 
+              {/* <Text style={this.state.searching ? null : [{fontWeight:'800'},{fontSize:18}]}>Howdy!</Text> */}
+           </View>
+            
+         
 
                  <FlatList
           data={this.state.searchMedia}
@@ -83,7 +109,7 @@ class DashboardView extends React.Component {
           renderItem={({ item }) =><ListItem titleStyle={{fontFamily :'cutive-mono-regular',fontSize:14,fontWeight:'400'}} title={item.snippet.title} onPress={()=>navigate('Profile',{youtubeId : item.id.videoId, youtubeTitle : item.snippet.title })}/>} 
            />
 
-           
+
 
          
 
@@ -106,6 +132,7 @@ class DashboardView extends React.Component {
     _submit = () => {
      
     //  alert(`Searching Youtube for ${this.state.text}!`);
+        this.setState({searching:true});
          this._fetchYoutubeList(this.state.text);
      };
 
@@ -138,6 +165,18 @@ class DashboardView extends React.Component {
 
 
   const styles = StyleSheet.create({
+    logo:{
+        height:132,
+        width:100,
+        alignSelf:'center'
+
+      },
+      imageContainer:{
+        justifyContent: 'center',
+    alignItems: 'center',
+    height: '70%'
+       
+      },
     input: {
         margin: 20,
         marginBottom: 0,
