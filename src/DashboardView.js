@@ -132,7 +132,7 @@ class DashboardView extends React.Component {
 
     _fetchYoutubeList(searchString){
         console.log("FETCH ACTINO",searchString);
-        return fetch(`http://localhost:8090/search/${this.state.text}`)
+        return fetch(`https://slowjam-server.herokuapp.com/search/${this.state.text}`)
             .then(res =>res.json())
             .then((responseJson) =>{
                 this.setState({ 

@@ -515,7 +515,7 @@ export default class PlaybackView extends React.Component {
 
   _getMediaSource =(youtubeId)=>{
     console.log("FETCH YOUTUBE ID",youtubeId);
-    return fetch(`http://localhost:8090/${youtubeId}`)
+    return fetch(`https://slowjam-server.herokuapp.com/${youtubeId}`)
         .then(res =>res.json())
         .then((responseJson) =>{
           _source = responseJson.fileURL;
