@@ -6,7 +6,7 @@
 # Slowjam - Slow your roll 🐌🐢
 
 Created using React Native and Expo SDK. 
-Slowjam is a Youtube music application, with a twist - the audio is processed so that it's sl o w w w e d down (with the pitch being affected as well). This has the effect of elevating the pathos of certain songs - for example, try listening to **The Smith's "Heaven knows I'm miserable now"** at 70% speed - *it's epically tragicomic*. The current contemporary cultural interest of slowed-down music originates in the pioneering efforts of Robert Earl Davis Jr. (July 20, 1971 – November 16, 2000), better known under his *nomme-de-guerre* DJ Screw, whose "chopped-and-screwed" mixes are a deep and compelling exploration of slowness as form.
+Slowjam is a Youtube music application, with a twist - the audio is processed so that it's sl o w w w e d down (with the pitch being affected as well). This has the effect of elevating the pathos of certain songs - for example, try listening to **The Smith's "Heaven knows I'm miserable now"** at 70% speed - *it becomes epically tragicomic*. As for the current contemporary cultural interest in slowed-down music, I'd say it originates in the pioneering efforts of Robert Earl Davis Jr. (July 20, 1971 – November 16, 2000), better known under his *nomme-de-guerre* DJ Screw, whose "chopped-and-screwed" mixes are a deep and compelling exploration of slowness as form.
 
 ## Technical Challenges
 
