@@ -11,7 +11,7 @@ import {
 
 const App = FluidNavigator({
     Home: { screen: DashboardView },
-    Profile: { screen: PlaybackView },
+    Player: { screen: PlaybackView },
   });
 
 

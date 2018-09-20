@@ -18,16 +18,9 @@ export default class MediaList extends Component {
     render() {
       return (
         <View>
-         
         
-
-       
              <Text style={styles.item}>{this.props.searchMedia[0] !== undefined ?  this.props.searchMedia[0].snippet.title: null}</Text>
-       
-
-
-         
-        
+     
         </View>
       );
     }

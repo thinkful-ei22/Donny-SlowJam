@@ -110,7 +110,7 @@ class DashboardView extends React.Component {
                          fontFamily :'cutive-mono-regular',
                          fontSize:14,fontWeight:'400'}} 
                          title={item.snippet.title} 
-                         onPress={()=>navigate('Profile',
+                         onPress={()=>navigate('Player',
                          {youtubeId : item.id.videoId,
                              youtubeTitle : item.snippet.title,
                              coverImageURL: item.snippet.thumbnails.high.url})}/>} 

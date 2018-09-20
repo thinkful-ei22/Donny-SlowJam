@@ -700,13 +700,13 @@ export default class PlaybackView extends React.Component {
               </Text>
             </View>
           </TouchableHighlight> */}
-          <TouchableHighlight onPress={this._onSpeakerPressed} underlayColor={BACKGROUND_COLOR}>
+          {/* <TouchableHighlight onPress={this._onSpeakerPressed} underlayColor={BACKGROUND_COLOR}>
             <MaterialIcons
               name={this.state.throughEarpiece ? ICON_THROUGH_EARPIECE : ICON_THROUGH_SPEAKER}
               size={32}
               color="black"
             />
-          </TouchableHighlight>
+          </TouchableHighlight> */}
         </View>
         <TouchableHighlight
                 underlayColor={BACKGROUND_COLOR}
