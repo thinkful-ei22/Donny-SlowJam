@@ -12,11 +12,11 @@ The basic idea of this app is a Youtube music playing application, with a twist 
 
 This app was created as part of Flex Week in the Thinkful Engineering Immersion Program. The goal of Flex Week is to practice learning a new technology/framework/etc in a week by yourself. In this case, I chose React Native (with no previous experience or knowledge of it) because I thought it would be fun!
 
-After reading the React Native docs and perusing links and tinkering with example code, I decided on the idea and discovered some immediate hurdles:
+After reading the React Native docs and perusing links and tinkering with example code, I decided on the idea and discovered an immediate hurdle:
 
-1) I wanted to use Expo for its ease-of-use in rapid prototyping - however, Expo does not have a Youtube player component.
+The Problem: I want to use Expo for its ease-of-use in rapid prototyping - however, Expo does not have a Youtube player component.
 
-Possible solutions that I discovered include:
+Possible, popular solutions include:
 
 * Detach the project and install the react-native-youtube library.
 
@@ -41,7 +41,7 @@ Once that was setup, things mostly worked!
 
 ## Further Thoughts
 
-Currently, the app has minimal functionality other than being able to take a search term, render a simple list of Youtube results which you can click to then play the (slowed-down) audio. It's lacking useful features for this type of app, such as making a playlist so you can play tracks one after another, which would be super-useful obviously. And also backgrounding of audio when the application is not in focus - this is a current limitation of expo, though you can of course detach the project and then implement that. Additionally, thinking about it some more, pretty much all of the project could be implemented outside of React Native as just a plain ol' React + HTML/CSS web application (which if you really wanted, I suppose you could wrap in some kind of wrapper to make a mobile app) since I'm not really using any underlying features of the phone currently like the camera or GPS, local storage. I'll probably keep working on this project though after Flex Week, fixing things and improving it - like I'm definitly going to add playlist functionality. One more thing - separating a Youtube video's media streams is against Youtubes ToS, so making an app that utilizes that is not the best idea if you are planning on making a commercial app, but this is more of a speculative fun idea :)
+Currently, the app has minimal functionality other than being able to take a search term, render a simple list of Youtube results which you can click to then play the (slowed-down) audio. It's lacking certain features that are expected for this type of app, such as making a playlist so you can play tracks one after another, which would be super-usefu, obviously. Also backgrounding of audio when the application is not in focus - this is a current limitation of expo, though you can of course detach the project and then implement that. Additionally, thinking about it some more, pretty much all of the project could be implemented outside of React Native as just a plain ol' React + HTML/CSS web application (which if you really wanted, I suppose you could wrap in some kind of wrapper to make a mobile app) since I'm not really using any underlying features of the phone currently like the camera, GPS, local storage. Also, separating a Youtube video's media streams is against Youtubes ToS, so making an app that utilizes that is not the best idea if you are planning on making a commercial app, but this is more of a speculative fun idea that I'll keep working on after Flex Week, fixing things and improving it - like I'm definitely going to add playlist functionality. :)
 
 
 
