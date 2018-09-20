@@ -43,7 +43,7 @@ class DashboardView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-             text: 'Post Malone', 
+             text: '', 
              searchMedia:[],
              fontLoaded:false,
              searching:false
@@ -74,29 +74,22 @@ class DashboardView extends React.Component {
         <View style={styles.emptyContainer} />
       ) : (
         <View style={styles.container}>
-            {/* <Button
-            title='Play Music'
-            onPress={() =>
-                navigate('Profile', { name: 'Jane' })
-            }
-            /> */}
-
-
-           {/* <Text>HELLO</Text> */}
-               {/* <MediaList searchMedia={this.state.searchMedia}/> */}
-            
+          
             <View style={this.state.searching ? styles.nullContainer : styles.imageContainer}>  
              
              <Image
               style={this.state.searching ? styles.smallLogo  : styles.logo}
               source={this.state.searching ? ICON_SMALL_LOGO.module : ICON_LOGO.module} /> 
               {/* <Text style={this.state.searching ? null : [{fontWeight:'800'},{fontSize:18}]}>Howdy!</Text> */}
-                <View style={   [{justifyContent: 'center'},
-    {alignItems: 'center'},{marginTop:0},{marginBottom:10}]}>
+                <View style={   
+                    [{justifyContent: 'center'},
+                    {alignItems: 'center'},{marginTop:0},{marginBottom:10}]}>
                     <TextInput
                     style={[styles.input, styles.text, { fontFamily: 'cutive-mono-regular' }]}
                     ref={ref => {this._textInput = ref}}
                     autoFocus={false}
+                    placeholder="Enter search here..."
+                    placeholderTextColor="#d3d3d3"
                     value={this.state.text}
                     onChangeText={(text) => this.setState({text})}
                     keyboardType="default"
@@ -107,31 +100,25 @@ class DashboardView extends React.Component {
                </View>  
            </View>
             
-         
+            <FlatList
+                data={this.state.searchMedia}
+                 keyExtractor={(i) => i.etag}
+                 renderItem={
+                    ({ item }) =>
+                      <ListItem 
+                         titleStyle={{
+                         fontFamily :'cutive-mono-regular',
+                         fontSize:14,fontWeight:'400'}} 
+                         title={item.snippet.title} 
+                         onPress={()=>navigate('Profile',
+                         {youtubeId : item.id.videoId,
+                             youtubeTitle : item.snippet.title,
+                             coverImageURL: item.snippet.thumbnails.high.url})}/>} 
+              />
 
-                 <FlatList
-          data={this.state.searchMedia}
-          keyExtractor={(i) => i.etag}
-          renderItem={({ item }) =><ListItem titleStyle={{fontFamily :'cutive-mono-regular',fontSize:14,fontWeight:'400'}} title={item.snippet.title} onPress={()=>navigate('Profile',{youtubeId : item.id.videoId, youtubeTitle : item.snippet.title })}/>} 
-           />
-
-
-
-         
-
-
-        {/* //    <Text>{`${item.snippet.title} ${item.id.videoId}`}</Text> */}
-            
-
-              
 
                 
         </View>
-
-    
-
-     
-
 
       );
     }

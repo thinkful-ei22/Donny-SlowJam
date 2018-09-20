@@ -4,6 +4,8 @@
 
 import React from 'react';
 import {
+  Animated,
+  Easing,
   Dimensions,
   Image,
   Slider,
@@ -32,6 +34,10 @@ class PlaylistItem {
   }
 }
 let _source=null;
+
+
+
+
 const PLAYLIST = [
   new PlaylistItem(
     '"Bobby Schmurda - Hot N*gga',
@@ -92,6 +98,8 @@ const BUFFERING_STRING = '...buffering...';
 const RATE_SCALE = 1.0;
 const VIDEO_CONTAINER_HEIGHT = DEVICE_HEIGHT * 2.0 / 5.0 - FONT_SIZE * 2;
 
+
+
 export default class PlaybackView extends React.Component {
   constructor(props) {
     super(props);
@@ -99,8 +107,10 @@ export default class PlaybackView extends React.Component {
     this.isSeeking = false;
     this.shouldPlayAtEndOfSeek = false;
     this.unmounted = null,
+    this.spinValue = new Animated.Value(0),
     this.playbackInstance = null;
     this.state = {
+      opacity: new Animated.Value(0),
       showVideo: false,
       playbackInstanceName: LOADING_STRING,
       loopingType: LOOPING_TYPE_ALL,
@@ -127,11 +137,38 @@ export default class PlaybackView extends React.Component {
     };
   }
 
-  static navigationOptions = {
-    title: '♪ ♪♪  ♪  ♪',
-  };
+    static navigationOptions = {
+      title: '♪ ♪♪  ♪  ♪',
+    };
+
+
+  spin () {
+    this.spinValue.setValue(0)
+    Animated.timing(
+      this.spinValue,
+      {
+        toValue: 1,
+        duration: 10000,
+        easing: Easing.linear,
+        useNativeDriver: true
+      }
+    ).start(() => this.spin())
+  }
+
+
+  onLoad = () => {
+    Animated.timing(this.state.opacity, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }
+
 
   componentDidMount() {
+  
+    this.spin()
+
     Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -156,26 +193,14 @@ export default class PlaybackView extends React.Component {
 
 
  componentWillUnmount(){
-    // if (this.playbackInstance != null) {
-    //   await this.playbackInstance.unloadAsync();
-    //   this.playbackInstance = null;
-
-    //   // this.playbackInstance.setOnPlaybackStatusUpdate(null);
-    //   // this.playbackInstance.stopAsync();
-    // }
-
       this.unmounted = true;
       this.playbackInstance.unloadAsync();
-   
-
-
-    
   }
  
 
   async _loadNewPlaybackInstance(playing) {
     console.log('Load New Playback Instance');
-    console.log('this playback props',this.props.navigation.state);
+    console.log('this playback props',this.props.navigation);
     console.log('this state props youtubeId', this.state.youtubeId);
     if (this.playbackInstance != null && this.unmounted) {
       await this.playbackInstance.unloadAsync();
@@ -403,21 +428,27 @@ export default class PlaybackView extends React.Component {
   };
 
   _getSeekSliderPosition() {
+    // console.log('playbackposition',  this.state.playbackInstancePosition /
+    // this.state.playbackInstanceDuration)
     if (
       this.playbackInstance != null &&
       this.state.playbackInstancePosition != null &&
       this.state.playbackInstanceDuration != null
     ) {
-      if (this.state.playbackInstancePosition / this.state.playbackInstanceDuration == 1) {
-        this.playbackInstance.unloadAsync()
-      }
-      else {
+
+      if (this.state.playbackInstancePosition/this.state.playbackInstanceDuration >= 1) {
+        console.log("end slider reached");
+        this.playbackInstance.stopAsync();
+      } else{
+
         return (
           this.state.playbackInstancePosition /
           this.state.playbackInstanceDuration
         );
-      }
-    }
+        }
+    }  
+
+    
     return 0;
   };
 
@@ -500,6 +531,16 @@ export default class PlaybackView extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
+  
+   
+
+    // Second interpolate beginning and end values (in this case 0 and 1)
+    const spin = this.spinValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg', '360deg']
+    })
+
+
     return !this.state.fontLoaded ? (
       <View style={styles.emptyContainer} />
     ) : (
@@ -509,17 +550,23 @@ export default class PlaybackView extends React.Component {
           <Text style={[styles.text, { fontFamily: 'cutive-mono-regular' }]}>
             {this.state.playbackInstanceName}
           </Text>
+         
         </View>
         <View style={styles.space} />
+       
         <View style={styles.videoContainer}>
+        <Animated.Image
+            onLoad={this.onLoad}
+            style={{ opacity: this.state.opacity, transform: [{rotate: spin}],width: 200, height: 200,borderRadius:100}}
+            source={{uri:this.props.navigation.state.params.coverImageURL}} />
           <Video
             ref={this._mountVideo}
             style={[
               styles.video,
               {
                 opacity: this.state.showVideo ? 1.0 : 0.0,
-                width: this.state.videoWidth,
-                height: this.state.videoHeight,
+                // width: this.state.videoWidth,
+                // height: this.state.videoHeight,
               },
             ]}
             resizeMode={Video.RESIZE_MODE_CONTAIN}
@@ -531,6 +578,7 @@ export default class PlaybackView extends React.Component {
             onReadyForDisplay={this._onReadyForDisplay}
             useNativeControls={this.state.useNativeControls}
           />
+         
         </View>
         <View
           style={[
@@ -616,7 +664,7 @@ export default class PlaybackView extends React.Component {
               onValueChange={this._onVolumeSliderValueChange}
             />
           </View>
-          <TouchableHighlight
+          {/* <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
             onPress={this._onLoopPressed}>
@@ -624,7 +672,7 @@ export default class PlaybackView extends React.Component {
               style={styles.button}
               source={LOOPING_TYPE_ICONS[this.state.loopingType].module}
             />
-          </TouchableHighlight>
+          </TouchableHighlight> */}
         </View>
         <View style={[styles.buttonsContainerBase, styles.buttonsContainerBottomRow]}>
           <TouchableHighlight
