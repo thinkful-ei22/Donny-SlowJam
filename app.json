@@ -4,7 +4,7 @@
   },
   "splash": {
     "image": "./assets/splash.png",
-    "backgroundColor": "#f6f6f6"
+    "backgroundColor": "#ffffff"
   }
 }
 

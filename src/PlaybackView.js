@@ -89,7 +89,7 @@ const DISABLED_OPACITY = 0.5;
 const FONT_SIZE = 14;
 const LOADING_STRING = '... loading ...';
 const BUFFERING_STRING = '...buffering...';
-const RATE_SCALE = 3.0;
+const RATE_SCALE = 1.0;
 const VIDEO_CONTAINER_HEIGHT = DEVICE_HEIGHT * 2.0 / 5.0 - FONT_SIZE * 2;
 
 export default class PlaybackView extends React.Component {
@@ -114,7 +114,7 @@ export default class PlaybackView extends React.Component {
       fontLoaded: false,
       shouldCorrectPitch: false,
       volume: 1.0,
-      rate: 0.747,
+      rate: 0.727,
       videoWidth: DEVICE_WIDTH,
       videoHeight: VIDEO_CONTAINER_HEIGHT,
       poster: false,
@@ -642,7 +642,7 @@ export default class PlaybackView extends React.Component {
             value={this.state.rate / RATE_SCALE}
             onSlidingComplete={this._onRateSliderSlidingComplete}
           />
-          <TouchableHighlight
+          {/* <TouchableHighlight
             underlayColor={BACKGROUND_COLOR}
             style={styles.wrapper}
             onPress={this._onPitchCorrectionPressed}>
@@ -651,7 +651,7 @@ export default class PlaybackView extends React.Component {
                 PC: {this.state.shouldCorrectPitch ? 'yes' : 'no'}
               </Text>
             </View>
-          </TouchableHighlight>
+          </TouchableHighlight> */}
           <TouchableHighlight onPress={this._onSpeakerPressed} underlayColor={BACKGROUND_COLOR}>
             <MaterialIcons
               name={this.state.throughEarpiece ? ICON_THROUGH_EARPIECE : ICON_THROUGH_SPEAKER}
@@ -660,6 +660,17 @@ export default class PlaybackView extends React.Component {
             />
           </TouchableHighlight>
         </View>
+        <TouchableHighlight
+                underlayColor={BACKGROUND_COLOR}
+                style={styles.wrapper}
+                onPress={onPress=()=>navigate('Home')}>
+                <View style={styles.button}>
+                  <Text style={[styles.text, { fontFamily: 'cutive-mono-regular' }]}>
+                   Return to Search 
+                  </Text>
+                </View>
+              </TouchableHighlight>
+        
         <View />
         {this.state.showVideo ? (
           <View>
@@ -670,9 +681,9 @@ export default class PlaybackView extends React.Component {
                 style={styles.wrapper}
                 onPress={this._onPosterPressed}>
                 <View style={styles.button}>
-                  {/* <Text style={[styles.text, { fontFamily: 'cutive-mono-regular' }]}>
+                  <Text style={[styles.text, { fontFamily: 'cutive-mono-regular' }]}>
                     Poster: {this.state.poster ? 'yes' : 'no'}
-                  </Text> */}
+                  </Text>
                 </View>
               </TouchableHighlight>
               <View />
@@ -694,15 +705,16 @@ export default class PlaybackView extends React.Component {
               <TouchableHighlight
                 underlayColor={BACKGROUND_COLOR}
                 style={styles.wrapper}
-                onPress={this._onUseNativeControlsPressed}>
+                onPress={onPress=()=>navigate('Home')}>
                 <View style={styles.button}>
-                  {/* <Text style={[styles.text, { fontFamily: 'cutive-mono-regular' }]}>
-                    Native Controls: {this.state.useNativeControls ? 'yes' : 'no'}
-                  </Text> */}
+                  <Text style={[styles.text, { fontFamily: 'cutive-mono-regular' }]}>
+                      Return to Search
+                  </Text>
                 </View>
               </TouchableHighlight>
               <View />
             </View>
+            
           </View>
         ) : null}
       </View>

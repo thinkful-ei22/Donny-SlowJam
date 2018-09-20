@@ -31,7 +31,8 @@ class Icon {
   }
 
 
-const ICON_LOGO= new Icon(require('../assets/logo.png'), 100, 132);
+const ICON_LOGO= new Icon(require('../assets/logotype.png'), 200, 135);
+const ICON_SMALL_LOGO= new Icon(require('../assets/logo-trans.png'), 25, 33);
 
 
 
@@ -42,7 +43,7 @@ class DashboardView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-             text: 'Useless Placeholder', 
+             text: 'Post Malone', 
              searchMedia:[],
              fontLoaded:false,
              searching:false
@@ -80,25 +81,30 @@ class DashboardView extends React.Component {
             }
             /> */}
 
-            <TextInput
-            style={[styles.input, styles.text, { fontFamily: 'cutive-mono-regular' }]}
-            ref={ref => {this._textInput = ref}}
-            autoFocus={false}
-            value={this.state.text}
-            onChangeText={(text) => this.setState({text})}
-            keyboardType="default"
-            returnKeyType="send"
-            onSubmitEditing={this._submit}
-            blurOnSubmit={true}
-           />
+
            {/* <Text>HELLO</Text> */}
                {/* <MediaList searchMedia={this.state.searchMedia}/> */}
             
-            <View style={this.state.searching ? null : styles.imageContainer}>   
+            <View style={this.state.searching ? styles.nullContainer : styles.imageContainer}>  
+             
              <Image
-              style={styles.logo}
-              source={this.state.searching ? null  : ICON_LOGO.module} /> 
+              style={this.state.searching ? styles.smallLogo  : styles.logo}
+              source={this.state.searching ? ICON_SMALL_LOGO.module : ICON_LOGO.module} /> 
               {/* <Text style={this.state.searching ? null : [{fontWeight:'800'},{fontSize:18}]}>Howdy!</Text> */}
+                <View style={   [{justifyContent: 'center'},
+    {alignItems: 'center'},{marginTop:0},{marginBottom:10}]}>
+                    <TextInput
+                    style={[styles.input, styles.text, { fontFamily: 'cutive-mono-regular' }]}
+                    ref={ref => {this._textInput = ref}}
+                    autoFocus={false}
+                    value={this.state.text}
+                    onChangeText={(text) => this.setState({text})}
+                    keyboardType="default"
+                    returnKeyType="send"
+                    onSubmitEditing={this._submit}
+                    blurOnSubmit={true}
+                     />
+               </View>  
            </View>
             
          
@@ -166,9 +172,17 @@ class DashboardView extends React.Component {
 
   const styles = StyleSheet.create({
     logo:{
-        height:132,
-        width:100,
+        height:135,
+        width:200,
         alignSelf:'center'
+
+      },
+      smallLogo:{
+        height:33,
+        width:25,
+        alignSelf:'center',
+        marginTop:40
+       
 
       },
       imageContainer:{
@@ -177,15 +191,24 @@ class DashboardView extends React.Component {
     height: '70%'
        
       },
+      nullContainer:{
+        
+      },
+      backgroundImage: {
+        flex: 1,
+        width: null,
+        height: null,
+    },
     input: {
         margin: 20,
         marginBottom: 0,
         height: 40,
+        width:250,
         paddingHorizontal: 10,
         borderRadius: 4,
         borderColor: '#ccc',
         borderWidth: 1,
-        fontSize: 16,
+        fontSize:18,
       },
     emptyContainer: {
       alignSelf: 'stretch',
