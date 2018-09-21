@@ -37,6 +37,28 @@ A JavaScript implementation of the above can be found at [https://github.com/fen
 
 Although it's concievable to do this all client-side (query the Youtube iframe API, process the results), I set up a server with ytdl-core and an endpoint that takes in a youtube video ID and then returns a JSON object with the link to the desired audio stream. 
 
+``` JavaScript
+
+  getFileURL (id){
+    return new Promise(function (resolve,reject) {
+      ytdl.getInfo(`https://www.youtube.com/watch?v=${id}`,(err, info) => {
+        if (err) reject (err);
+        let audioFormats = ytdl.filterFormats(info.formats,'audioonly');
+        console.log('Formats with only audio: ', audioFormats);
+        let foundItag;
+        let counter=0;
+        while( audioFormats[counter].itag !== '140'){
+          counter++;
+        }
+        foundItag = audioFormats[counter];
+        let url = { 'fileURL': foundItag.url};
+        resolve(url);
+      });
+    });  
+  }
+  
+```
+
 Once that was setup, things (mostly) worked! 
 
 ## Further Thoughts
