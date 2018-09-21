@@ -39,6 +39,15 @@ Although it's concievable to do this all client-side (query the Youtube iframe A
 
 ``` JavaScript
 
+ //gets file URL given a Youtube Id
+  app.get('/get/:videoId', (req,res,next) => {
+    const {videoId} = req.params;
+    youtube.getFileURL(videoId)
+      .then(videoId => res.json(videoId))
+      .catch(err=>next(err));
+  });
+
+//...In youtube class file
   getFileURL (id){
     return new Promise(function (resolve,reject) {
       ytdl.getInfo(`https://www.youtube.com/watch?v=${id}`,(err, info) => {
@@ -56,14 +65,14 @@ Although it's concievable to do this all client-side (query the Youtube iframe A
       });
     });  
   }
-  
+
 ```
 
 Once that was setup, things (mostly) worked! 
 
 ## Further Thoughts
 
-Currently, the app has minimal functionality other than being able to take a search term, render a simple list of Youtube results which you can click to then play the (slowed-down) audio. It's lacking certain features that are expected for this type of app, such as making a playlist and backgrounding of audio when the application is not in focus, although the lack of this last feature is due to a current limitation of Expo - you can detach the project and then implement it, which is something I'm going to explore. On further thought, pretty much all of the project could be implemented outside of React Native as just a plain ol' React + HTML/CSS web application (which if you really wanted, I suppose you could wrap in some kind of wrapper to make a mobile app) since I'm not really using any underlying features of the phone currently like the camera, GPS, local storage. Also, separating a Youtube video's media streams is against Youtubes ToS, so making an app that utilizes that is not the best idea if you are planning on making a commercial app - but this is more of a speculative fun idea that I'll keep working on after Flex Week, fixing things, improving it, learning and having fun :)
+Currently, the app has minimal functionality other than being able to take a search term, rendering out a simple list of Youtube results that you can click on to then play the (slowed-down) audio of a particular result. It's lacking certain features that are expected for this type of app, such as making a playlist and backgrounding of audio when the application is not in focus. The lack of this last feature is due to a current limitation of Expo - you can detach the project and then implement it, which is something I'm going to explore.  Also, separating a Youtube video's media streams is against Youtubes ToS, so making an app that utilizes that is not the best idea if you are planning on making a commercial app - but this is more of a speculative fun idea that I'll keep working on after Flex Week, debugging, fixing things, improving it, learning and all that jazz :)
 
 
 
