@@ -36,7 +36,7 @@ class PlaylistItem {
 let _source=null;
 
 
-
+//DUMMY DATA - not used currently
 
 const PLAYLIST = [
   new PlaylistItem(

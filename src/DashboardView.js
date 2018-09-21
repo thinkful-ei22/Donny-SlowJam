@@ -14,7 +14,6 @@ import { Button, ListItem, List } from 'react-native-elements';
 import { Asset, Audio, Font, Video } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import PlaybackView from './PlaybackView';
-import MediaList from './MediaList';
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 const BACKGROUND_COLOR = '#FFFFFF';
@@ -33,10 +32,6 @@ class Icon {
 
 const ICON_LOGO= new Icon(require('../assets/logotype.png'), 200, 135);
 const ICON_SMALL_LOGO= new Icon(require('../assets/logo-trans.png'), 25, 33);
-
-
-
-
 
 class DashboardView extends React.Component {
 
